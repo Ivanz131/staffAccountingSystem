@@ -16,7 +16,8 @@ public class Employee {
     private String phone;
     private String workPhone;
     private String imageLink;
-    private String languages;
+    private String[] languages;
+    private String[] languagesLevels;
     private String t_education;
     private String educationalInst;
     private String specialty;
