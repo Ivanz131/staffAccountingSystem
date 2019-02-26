@@ -4,6 +4,7 @@ import lombok.Data;
 import net.ivanz.staffAccountingSystem.integration.UserRoles;
 import net.ivanz.staffAccountingSystem.utils.AuthHelper;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -16,6 +17,7 @@ import java.util.Collection;
 public class User implements UserDetails {
     @Id
     private String id;
+    @Indexed(unique = true, dropDups = true)
     private String username;
     private String password;
     private String[] grantedAuthorities;

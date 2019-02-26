@@ -1,9 +1,8 @@
 package net.ivanz.staffAccountingSystem.controller;
 
+import lombok.extern.log4j.Log4j2;
 import net.ivanz.staffAccountingSystem.payload.UploadFileResponse;
 import net.ivanz.staffAccountingSystem.services.FileStorageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -19,16 +18,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
+@Log4j2
+@RestController("/api/files")
 public class FileController {
-
-    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
-
     @Autowired
     private FileStorageService fileStorageService;
 
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+        log.info("uploadFile: file = {}", file);
         String fileName = fileStorageService.storeFile(file);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -41,6 +39,7 @@ public class FileController {
 
     @PostMapping("/uploadMultipleFiles")
     public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+        log.info("uploadMultipleFiles: files = {}", files);
         return Arrays.asList(files)
                 .stream()
                 .map(file -> uploadFile(file))
@@ -49,6 +48,7 @@ public class FileController {
 
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        log.info("downloadFile: fileName = {}, request = {}", fileName, request);
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);
 
@@ -57,7 +57,7 @@ public class FileController {
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            logger.info("Could not determine file type.");
+            log.error("Could not determine file type.");
         }
 
         // Fallback to the default content type if type could not be determined
