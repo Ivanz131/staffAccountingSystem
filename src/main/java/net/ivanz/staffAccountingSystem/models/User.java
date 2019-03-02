@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Document(collection = "users")
 @Data
@@ -24,6 +25,8 @@ public class User implements UserDetails {
     private String email;
     private String firstName;
     private String lastName;
+
+
 
     /**
      * Creating user from Users Data Transfer Object
@@ -66,6 +69,22 @@ public class User implements UserDetails {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public User(String id, String username, String password, List<UserRoles> grantedAuthorities, String email, String firstName, String lastName) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.grantedAuthorities = AuthHelper.convertToAuthorities(grantedAuthorities);
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public User(String username, String password, List<UserRoles> grantedAuthorities) {
+        this.username = username;
+        this.password = password;
+        this.grantedAuthorities = AuthHelper.convertToAuthorities(grantedAuthorities);
     }
 
 

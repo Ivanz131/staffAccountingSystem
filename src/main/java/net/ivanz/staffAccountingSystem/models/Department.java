@@ -8,13 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "workplaces")
+@Document(collection = "departments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Department {
     @Id
-    private String Id;
-    private List<Employee> employeeList;
+    private String id;
+    private String name;
     private Employee chief;
+    private List<Employee> employeeList;
 }

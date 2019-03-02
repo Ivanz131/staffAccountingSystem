@@ -3,7 +3,6 @@ package net.ivanz.staffAccountingSystem.controller;
 import lombok.extern.log4j.Log4j2;
 import net.ivanz.staffAccountingSystem.models.User;
 import net.ivanz.staffAccountingSystem.models.UserInDTO;
-import net.ivanz.staffAccountingSystem.repositories.UserRepository;
 import net.ivanz.staffAccountingSystem.services.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

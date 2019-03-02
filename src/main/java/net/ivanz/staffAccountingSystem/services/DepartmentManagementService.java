@@ -9,7 +9,6 @@ import net.ivanz.staffAccountingSystem.repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -30,17 +29,16 @@ public class DepartmentManagementService {
 
     public Department createDepartment(Department department){
         log.debug("createDepartment: department = {}", department);
-        department.setEmployeeList(new ArrayList<>());
-        department.setChief(new Employee());
-        return department;
+        return departmentRepository.save(department);
     }
 
     public Department updateDepartment(Department department, String id){
         log.debug("updateDepartment: department = {}, id = {}", department, id);
         Department fromDB = departmentRepository.findById(id).orElseThrow(() -> new RestException(ErrorCodes.DEPARTMENT_NOT_EXIST));
+        fromDB.setName(department.getName());
         fromDB.setChief(department.getChief());
         fromDB.setEmployeeList(department.getEmployeeList());
-        return fromDB;
+        return departmentRepository.save(fromDB);
     }
 
     public void deleteDepartment(String id){
@@ -53,6 +51,6 @@ public class DepartmentManagementService {
         log.debug("addNewEmployee: departmentId = {}, newEmployee = {}", departmentId, newEmployee);
         Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new RestException(ErrorCodes.DEPARTMENT_NOT_EXIST));
         department.getEmployeeList().add(newEmployee);
-        return department;
+        return departmentRepository.save(department);
     }
 }
